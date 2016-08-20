@@ -1,7 +1,6 @@
 <?php
 
-//prefix for table 
-defined('PRX') or define('PRX', 'prv_');
+
 
 $params = require(__DIR__ . '/params.php');
 

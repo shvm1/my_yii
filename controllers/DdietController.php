@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Ddiet;
-use app\models\DdietSearch;
+use app\models\Diet;
+use app\models\DietSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * DdietController implements the CRUD actions for Ddiet model.
  */
-class DdietController extends Controller
+class DietController extends Controller
 {
     /**
      * @inheritdoc
@@ -51,8 +51,11 @@ class DdietController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        if($model->status_del) throw new NotFoundHttpException('The requested page does not exist.');//return $this->redirect(['index']);
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -66,7 +69,7 @@ class DdietController extends Controller
         $model = new Ddiet();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->dd_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -83,9 +86,11 @@ class DdietController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        // check active diet
+        if($model->status_del) throw new NotFoundHttpException('The requested page does not exist.');//return $this->redirect(['index']);
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->dd_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -101,8 +106,8 @@ class DdietController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $this->findModel($id)->my_delete();
+        
         return $this->redirect(['index']);
     }
 

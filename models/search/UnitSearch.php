@@ -1,16 +1,16 @@
 <?php
 
-namespace app\models;
+namespace app\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Diet;
+use app\models\Unit;
 
 /**
- * DietSearch represents the model behind the search form about `app\models\Diet`.
+ * UnitSearch represents the model behind the search form about `app\models\Unit`.
  */
-class DietSearch extends Diet
+class UnitSearch extends Unit
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class DietSearch extends Diet
     public function rules()
     {
         return [
-            [['d_id', 'd_kal', 'v_update', 'v_create'], 'integer'],
-            [['d_title'], 'safe'],
+            [['id', 'status_del'], 'integer'],
+            [['title'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class DietSearch extends Diet
      */
     public function search($params)
     {
-        $query = Diet::find();
+        $query = Unit::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +59,11 @@ class DietSearch extends Diet
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'd_id' => $this->d_id,
-            'd_kal' => $this->d_kal,
-            'v_update' => $this->v_update,
-            'v_create' => $this->v_create,
+            'id' => $this->id,
+            'status_del' => $this->status_del,
         ]);
 
-        $query->andFilterWhere(['like', 'd_title', $this->d_title]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

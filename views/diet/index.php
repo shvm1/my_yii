@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\DietSearch */
+/* @var $searchModel app\models\search\DietSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Диеты';
+$this->title = 'Diets';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="diet-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать диету', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Diet', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'd_id',
-            'd_title',
-            'd_kal',
-            'v_update:datetime',
-            'v_create:datetime',
+            'id',
+            'title',
+            'kal',
+            'status_del',
+            'create_time:datetime',
+            // 'update_time:datetime',
+            // 'create_user_id',
+            // 'update_user_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

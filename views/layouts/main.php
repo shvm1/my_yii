@@ -38,9 +38,14 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Справочники', 'items' => [
-                ['label' => 'Диеты', 'url' => ['/ddiet']]
+                
+                ['label' => 'Приемы пищи', 'url' => ['/meal']],
+                ['label' => 'Наборы приемов пищи', 'url' => ['/kit']],
+                ['label' => 'Витамины', 'url' => ['/vitamin']],
+                ['label' => 'Блюда', 'url' => ['/dish']]
+                
             ]],
-            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Диеты', 'url' => ['/diet']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]

@@ -10,7 +10,7 @@ use app\models\Ddiet;
 /**
  * DdietSearch represents the model behind the search form about `app\models\Ddiet`.
  */
-class DdietSearch extends Ddiet
+class DietSearch extends Diet
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class DdietSearch extends Ddiet
     public function rules()
     {
         return [
-            [['dd_id', 'dd_kal', 'dd_status_del', 'u_create', 'u_update', 'v_update', 'v_create'], 'integer'],
-            [['dd_title'], 'safe'],
+            [['id', 'kal'], 'integer'],
+            [['title'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class DdietSearch extends Ddiet
      */
     public function search($params)
     {
-        $query = Ddiet::find();
+        $query = Diet::find()->andWhere(['status_del' => 0]);
 
         // add conditions that should always apply here
 
@@ -59,16 +59,16 @@ class DdietSearch extends Ddiet
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'dd_id' => $this->dd_id,
-            'dd_kal' => $this->dd_kal,
-            'dd_status_del' => $this->dd_status_del,
+            'id' => $this->id,
+            'kal' => $this->kal,
+            'status_del' => $this->status_del,
             'u_create' => $this->u_create,
             'u_update' => $this->u_update,
             'v_update' => $this->v_update,
             'v_create' => $this->v_create,
         ]);
 
-        $query->andFilterWhere(['like', 'dd_title', $this->dd_title]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\DietSearch */
+/* @var $model app\models\search\DietSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,15 +15,21 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'd_id') ?>
+    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'd_title') ?>
+    <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'd_kal') ?>
+    <?= $form->field($model, 'kal') ?>
 
-    <?= $form->field($model, 'v_update') ?>
+    <?= $form->field($model, 'status_del') ?>
 
-    <?= $form->field($model, 'v_create') ?>
+    <?= $form->field($model, 'create_time') ?>
+
+    <?php // echo $form->field($model, 'update_time') ?>
+
+    <?php // echo $form->field($model, 'create_user_id') ?>
+
+    <?php // echo $form->field($model, 'update_user_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

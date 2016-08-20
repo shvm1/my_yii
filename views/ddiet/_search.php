@@ -15,13 +15,13 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'dd_id') ?>
+    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'dd_title') ?>
+    <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'dd_kal') ?>
+    <?= $form->field($model, 'kal') ?>
 
-    <?= $form->field($model, 'dd_status_del') ?>
+    <?= $form->field($model, 'status_del') ?>
 
     <?= $form->field($model, 'u_create') ?>
 
