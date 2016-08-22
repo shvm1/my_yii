@@ -39,7 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'weight',
             'description',
             'price',
-            'status_del',
+            [
+                'label' => 'Витамины',
+                'value' => $model->dishVitaminsList,
+            ]
         ],
     ]) ?>
 

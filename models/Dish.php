@@ -84,14 +84,7 @@ class Dish extends ARNoDelete
         return $this->hasMany(DishVitamin::className(), ['dish_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVitamins()
-    {
-        return $this->hasMany(Vitamin::className(), ['id' => 'vitamin_id'])->viaTable('{{%dish_vitamin}}', ['dish_id' => 'id']);
-    }
-    
+   
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -100,6 +93,33 @@ class Dish extends ARNoDelete
         return $this->hasMany(OrderdayMealDish::className(), ['dish_id' => 'id']);
     }
 
+    public function getVitaminsArray()
+    {
+        return Vitamin::find()->active()->with(['unit'])->all();
+    }
+    
+    public function getVitaminsArraySelect()
+    {
+        
+        $vitaminsArray = array();
+        foreach($this->vitaminsarray as $vitamin)
+        {
+            $vitaminsArray[$vitamin->id] =  $vitamin->title.' '.$vitamin->unit->title; 
+        }
+
+        return $vitaminsArray;
+    }
+    
+    public function getDishVitaminsList()
+        {
+        $list = array();
+        foreach($this->getDishVitamins()->with('vitamin.unit')->all() as $dishVitamin)
+            {
+            if(!empty($dishVitamin->vitamin_id) && !empty($dishVitamin->value)) $list[] = $dishVitamin->vitamin->title.' - '.$dishVitamin->value.' '.$dishVitamin->vitamin->unit->title;
+            }
+        return implode('; ',$list);
+        }
+    
     /**
      * @inheritdoc
      * @return \app\models\query\DishQuery the active query used by this AR class.

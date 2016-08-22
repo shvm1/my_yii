@@ -41,7 +41,7 @@ class VitaminSearch extends Vitamin
      */
     public function search($params)
     {
-        $query = Vitamin::find()->active();
+        $query = Vitamin::find()->with(['unit'])->active();
 
         // add conditions that should always apply here
 

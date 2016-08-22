@@ -12,12 +12,7 @@ class m160814_092117_create_diet_table extends Migration
      */
     public function up()
     {
-        $this->createTable('{{%diet}}', [
-            'id' => $this->primaryKey(),
-            'title' => $this->string(255)->notNull(),
-            'kal' => $this->integer()->notNull(),
-            'status_del' => $this->boolean()->defaultValue(false),
-        ]);
+        
     }
 
     /**
@@ -25,6 +20,6 @@ class m160814_092117_create_diet_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('{{%diet}}');
+        
     }
 }

@@ -66,10 +66,11 @@ class m160813_114613_create_diet_table extends Migration
         $this->createTable('{{%dish_vitamin}}', [
             'id' => $this->primaryKey(),
             'dish_id' => $this->integer()->notNull(),
-            'vitamin_id' => $this->integer()->defaultValue(0),
+            'vitamin_id' => $this->integer(),
             'value' => $this->float()->defaultValue(0)
             
         ]);
+        
         
         $this->addForeignKey('fk-dish_vitamin-dish', '{{%dish_vitamin}}', 'dish_id', '{{%dish}}', 'id', 'CASCADE', 'RESTRICT');
         $this->addForeignKey('fk-dish_vitamin-vitamin', '{{%dish_vitamin}}', 'vitamin_id', '{{%vitamin}}', 'id', 'CASCADE', 'RESTRICT');

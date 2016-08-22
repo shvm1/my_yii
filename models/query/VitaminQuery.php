@@ -14,6 +14,9 @@ class VitaminQuery extends \yii\db\ActiveQuery
         return $this->andWhere(['status_del' => 0]);
     }
 
+    
+    
+    
     /**
      * @inheritdoc
      * @return \app\models\Vitamin[]|array

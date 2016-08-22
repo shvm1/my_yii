@@ -1,7 +1,9 @@
 <?php
 
+use app\models\Dish;
 use yii\helpers\Html;
 use yii\grid\GridView;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\DishSearch */
@@ -22,19 +24,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            
 
-            'id',
+            
             'title',
             'kal',
-            'protein',
-            'fat',
+            [
+                'label' => 'Белки/Жиры/Угл.',
+                'value' => function(Dish $dish){
+                    return $dish->protein.' / '.$dish->fat.' / '.$dish->carbohydrate;
+                },
+            ],
+           
+            //'protein',
+            //'fat',
             // 'carbohydrate',
             // 'url:url',
             // 'image',
-            // 'weight',
+             'weight',
             // 'description',
-            // 'price',
+             'price',
             // 'status_del',
 
             ['class' => 'yii\grid\ActionColumn'],

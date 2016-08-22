@@ -24,6 +24,7 @@ use Yii;
  */
 class Diet extends \yii\db\ActiveRecord
 {
+    public $count_day;
     /**
      * @inheritdoc
      */

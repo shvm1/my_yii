@@ -15,7 +15,7 @@ use Yii;
  * @property DishVitamin[] $dishVitamins
  * @property Unit $unit
  */
-class Vitamin extends \yii\db\ActiveRecord
+class Vitamin extends ARNoDelete
 {
     /**
      * @inheritdoc
@@ -67,6 +67,8 @@ class Vitamin extends \yii\db\ActiveRecord
         return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
     }
 
+    
+    
     /**
      * @inheritdoc
      * @return \app\models\query\VitaminQuery the active query used by this AR class.

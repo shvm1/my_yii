@@ -3,15 +3,22 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use app\models\Vitamin;
+use yii\widgets\Pjax;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Dish */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="dish-form">
-
+<div class="dish-form col-sm-7">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Характеристики блюда</h3>
+        </div>
+        <div class="panel-body">
+    
+  
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
@@ -36,44 +43,34 @@ use app\models\Vitamin;
 
     
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
 
     <?php ActiveForm::end(); ?>
-    <?php echo '<div>Витамины:</div>'; ?>
-    <?php $form2 = ActiveForm::begin([
-    'action' => Url::toRoute(['dish-vitamin/update', 'dishId' => $model->id]),
-    'options' => [
-        'data-pjax' => '1'
-    ],
-    'id' => 'vitaminsUpdateForm'
-]); ?>
+        </div>
+    </div>    
+</div>
 
-    <?php 
-    $vitaminsArray = array();
-    $vitamins = Vitamin::find()->active()->all();
-    //var_dump($vitamins);
-    foreach($vitamins as $vitamin)
+<div class="dish-vitamins-form  col-sm-5">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Витамины блюда</h3>
+        </div>
+        <div class="panel-body">
+            
+<?php 
+if($model->isNewRecord)
     {
-    $vitaminsArray[$vitamin->id] =  $vitamin->title.' '.$vitamin->unit->title; 
+    echo 'Добавить витамины Вы сможете после создания блюда.';
     }
-    
-    
-    ?>
-    <?php foreach ($model->dishVitamins as $key => $dishVitamin): ?>
-    
-    <?php //var_dump($dishVitamin->vitamin->title); ?>
-    
-            <?= $form2->field($dishVitamin, "[$key]vitamin_id",['options' => ['class' => 'pull-left'],'labelOptions' => ['style' => 'display:none;']])->dropDownList($vitaminsArray/*Vitamin::find()->active()->select(['name','id'])->indexBy('id')->column()*/); ?>
-            <?= $form2->field($dishVitamin, "[$key]value",['options' => ['class' => 'pull-left'],'labelOptions' => ['style' => 'display:none;']]); ?>
-            <?= Html::button('Х', ['class' => 'btn btn-danger del-dish-vitamin','rel' => $dishVitamin->id])?>
-    <div style="clear:both;"></div>
-    <?php endforeach ?>
-
-    <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
-<?php ActiveForm::end(); ?>
-    
-    
-    
+else
+    {
+    Pjax::begin(['enablePushState' => false]);     
+        echo $this->render('_vitamins', ['model' => $model]);
+     Pjax::end(); 
+    }
+ ?>    
+        </div>
+    </div>
 </div>

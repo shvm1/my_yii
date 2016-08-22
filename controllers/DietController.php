@@ -5,6 +5,9 @@ namespace app\controllers;
 use Yii;
 use app\models\Diet;
 use app\models\search\DietSearch;
+use app\models\DietPrice;
+use app\models\Kit;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,12 +67,16 @@ class DietController extends Controller
     public function actionCreate()
     {
         $model = new Diet();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $dietprices = $this->initDietPrices($model);
+        $post = Yii::$app->request->post();
+        
+        if ($model->load($post) && $model->save() && Model::loadMultiple($dietprices, $post)) {
+            $this->processDietPrices($dietprices, $model);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'dietprices' => $dietprices,
             ]);
         }
     }
@@ -83,12 +90,16 @@ class DietController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $dietprices = $this->initDietPrices($model);
+        $post = Yii::$app->request->post();
+        
+        if ($model->load($post) && $model->save() && Model::loadMultiple($dietprices, $post)) {
+            $this->processDietPrices($dietprices, $model);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'dietprices' => $dietprices,
             ]);
         }
     }
@@ -119,6 +130,37 @@ class DietController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+    /**
+     * @param Diet $model
+     * @return DietPrice[]
+     */
+    protected function initDietPrices(Diet $model)
+    {
+        /** @var DietPrice[] $dietprices */
+        $dietprices = $model->getDietPrices()->with('kit')->indexBy('kit_id')->all();
+        $kits = Kit::find()->indexBy('id')->all();
+
+        foreach (array_diff_key($kits, $dietprices) as $kit) {
+            $dietprices[$kit->id] = new DietPrice(['kit_id' => $kit->id]);
+        }
+
+        
+        return $dietprices; 
+    }
+    
+     /**
+     * @param DietPrice[] $dietprices
+     * @param Diet $model
+     */
+    private function processDietPrices($dietprices, Diet $model)
+    {
+        foreach ($dietprices as $dietprice) {
+            $dietprice->diet_id = $model->id;
+           
+            $dietprice->save(false);  
         }
     }
 }

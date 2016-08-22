@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Diet;
+use yii\db\Expression;
 
 /**
  * DietSearch represents the model behind the search form about `app\models\Diet`.
@@ -41,7 +42,13 @@ class DietSearch extends Diet
      */
     public function search($params)
     {
-        $query = Diet::find();
+        $query = Diet::find()
+                ->active()
+                ->select(['{{%diet}}.*','count_day'=>new Expression('COUNT({{%dietday}}.id)')])
+                ->joinWith(['dietdays' => function($q) {
+                    $q->onCondition(['{{%dietday}}.status_del' => 0]);
+                }],false)
+                ->groupBy('{{%diet}}.id');
 
         // add conditions that should always apply here
 

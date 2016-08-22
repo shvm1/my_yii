@@ -42,7 +42,7 @@ class DishSearch extends Dish
      */
     public function search($params)
     {
-        $query = Dish::find()->with(['vitamins']);
+        $query = Dish::find()->with(['dishVitamins']);
 
         // add conditions that should always apply here
 

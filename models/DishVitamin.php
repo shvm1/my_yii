@@ -46,7 +46,7 @@ class DishVitamin extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            
             'dish_id' => 'Dish ID',
             'vitamin_id' => 'Vitamin ID',
             'value' => 'Value',
@@ -73,4 +73,6 @@ class DishVitamin extends \yii\db\ActiveRecord
     {
         return $this->title.' '.$this->vitamin->unit->title;
     }
+    
+    
 }

@@ -22,13 +22,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            
 
             'id',
             'title',
             'kal',
-            'status_del',
-            'create_time:datetime',
+            [
+                'label' => 'дней',
+                'attribute' => 'count_day'
+            ],
+            //'status_del',
+            //'create_time:datetime',
             // 'update_time:datetime',
             // 'create_user_id',
             // 'update_user_id',
