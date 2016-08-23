@@ -22,7 +22,7 @@ use Yii;
  * @property Order[] $orders
  * @property Orderday[] $orderdays
  */
-class Diet extends \yii\db\ActiveRecord
+class Diet extends ARNoDelete
 {
     public $count_day;
     /**

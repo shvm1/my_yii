@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\ListView;
+use yii\data\ActiveDataProvider;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Diet */
@@ -30,8 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'kal',
-            'count_day'
+            'kal'
             //'status_del',
             //'create_time:datetime',
             //'update_time:datetime',
@@ -39,5 +40,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'update_user_id',
         ],
     ]) ?>
+    
+ <?php   echo ListView::widget([
+    'dataProvider' => new ActiveDataProvider(['query' => $model->getDietdays()->forDietView(),
+                                                'pagination' => false]),
+    'itemView' => '_dietday',
+     'summary' => '<h2>Дни диеты</h2>'
+     
+]);?>
 
 </div>

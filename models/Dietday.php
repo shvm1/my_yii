@@ -17,6 +17,10 @@ use Yii;
  */
 class Dietday extends \yii\db\ActiveRecord
 {
+    public $kal;
+    public $protein;
+    public $fat;
+    public $carbohydrate;
     /**
      * @inheritdoc
      */

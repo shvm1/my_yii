@@ -11,6 +11,7 @@ use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Expression;
 
 /**
  * DietController implements the CRUD actions for Diet model.
@@ -126,7 +127,8 @@ class DietController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Diet::findOne($id)) !== null) {
+        if (($model = Diet::findOne($id)) !== null && $model->status_del == 0) {
+                     
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

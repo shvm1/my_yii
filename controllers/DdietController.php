@@ -120,7 +120,14 @@ class DietController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Ddiet::findOne($id)) !== null) {
+        //if (($model = Ddiet::findOne($id)) !== null) {
+        if (($model = Ddiet::find($id)->active()
+                ->select(['{{%diet}}.*','count_day'=>new Expression('COUNT({{%dietday}}.id)')])
+                ->joinWith(['dietdays' => function($q) {
+                    $q->onCondition(['{{%dietday}}.status_del' => 0]);
+                }],false)
+                ->groupBy('{{%diet}}.id')->one()) !== null) {   
+                    var_dump($model);exit;
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
