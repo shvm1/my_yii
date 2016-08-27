@@ -15,7 +15,7 @@ use Yii;
  * @property Diet $diet
  * @property DietdayMealDish[] $dietdayMealDishes
  */
-class Dietday extends \yii\db\ActiveRecord
+class Dietday extends ARNoDelete
 {
     public $kal;
     public $protein;

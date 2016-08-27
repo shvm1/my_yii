@@ -3,19 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use yii\base\Model;
-use app\models\DishVitamin;
-use app\models\search\DishVitaminSearh;
-use app\models\Dish;
-use app\models\Vitamin;
+use app\models\DietdayMealDish;
+use app\models\search\DietdayMealDishSearh;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DishVitaminController implements the CRUD actions for DishVitamin model.
+ * DietdayMealDishController implements the CRUD actions for DietdayMealDish model.
  */
-class DishVitaminController extends Controller
+class DietdayMealDishController extends Controller
 {
     /**
      * @inheritdoc
@@ -24,18 +21,21 @@ class DishVitaminController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className()
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
             ],
         ];
     }
 
     /**
-     * Lists all DishVitamin models.
+     * Lists all DietdayMealDish models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new DishVitaminSearh();
+        $searchModel = new DietdayMealDishSearh();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class DishVitaminController extends Controller
     }
 
     /**
-     * Displays a single DishVitamin model.
+     * Displays a single DietdayMealDish model.
      * @param integer $id
      * @return mixed
      */
@@ -57,85 +57,66 @@ class DishVitaminController extends Controller
     }
 
     /**
-     * Creates a new DishVitamin model.
+     * Creates a new DietdayMealDish model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($dishId)
+    public function actionCreate($DietdayId, $MealId)
     {
-        $dish = $this->findDish($dishId);
-        $model = new DishVitamin();
-        $model->dish_id = $dishId;
+        $dietday = findDietday($DietdayId);
+        $model = new DietdayMealDish();
+        $model->dietday_id = $DietdayId;
+        $model->meal_id = $MealId;
         $model->save(false);
-        $this->batchUpdate($dish->dishVitamins);
-         $dish->refresh();
-        return $this->renderAjax('/dish/_vitamins', ['model' => $dish]);
-        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }*/
+        $this->batchUpdate($dietday->dietdayMealDishes);
+        $dietday->refresh();
+        return $this->renderAjax('_form', ['model' => $dietday]);
+        
     }
 
     /**
-     * Updates an existing DishVitamin model.
+     * Updates an existing DietdayMealDish model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($dishId)
+    public function actionUpdate($DietdayId)
     {
-         $dish = $this->findDish($dishId);
-        $this->batchUpdate($dish->dishVitamins, true);
-        $dish->refresh();
-       // $dish = $this->findDish($dishId);
-        return $this->renderAjax('/dish/_vitamins', ['model' => $dish]);
-       /* $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }*/
+        $dietday = findDietday($DietdayId);
+        
+        $this->batchUpdate($dietday->dietdayMealDishes);
+        $dietday->refresh();
+        
+        return $this->renderAjax('_form', ['model' => $dietday]);
     }
 
     /**
-     * Deletes an existing DishVitamin model.
+     * Deletes an existing DietdayMealDish model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
     {
-       $model = $this->findModel($id);
-        $dish = $model->dish;
+        $model = $this->findModel($id);
+        $dietday = $model->dietday;
         $model->delete();
-        $this->batchUpdate($dish->dishVitamins);
-         $dish->refresh();
-        return $this->renderAjax('/dish/_vitamins', ['model' => $dish]);
+        $this->batchUpdate($dietday->dietdayMealDishes);
+        $dietday->refresh();
         
-        /*$this->findModel($id)->delete();
-
-        return $this->redirect(['index']);*/
+        return $this->renderAjax('_form', ['model' => $dietday]);
     }
 
-     
-    
-    
     /**
-     * Finds the DishVitamin model based on its primary key value.
+     * Finds the DietdayMealDish model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return DishVitamin the loaded model
+     * @return DietdayMealDish the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = DishVitamin::findOne($id)) !== null) {
+        if (($model = DietdayMealDish::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -143,24 +124,23 @@ class DishVitaminController extends Controller
     }
     
     /**
-     * Finds the Dish model based on its primary key value.
+     * Finds the Dietday model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Dish the loaded model
+     * @return Dietday the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findDish($id)
+    protected function findDietday($id)
     {
-        if (($model = Dish::findOne($id)) !== null) {
+        if (($model = Dietday::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
     
-    
     /**
-     * Update all vitamins
+     * Update all MealDishes
      * @param Model $items
      * @return nothing
      */
@@ -169,7 +149,7 @@ class DishVitaminController extends Controller
         if (Model::loadMultiple($items, Yii::$app->request->post()) &&
             Model::validateMultiple($items)) {
             foreach ($items as $key => $item) {
-                if(!$item->vitamin_id || !$item->value)
+                if(!$item->dish_id || !$item->value)
                 {
                  $deleteEmpty ? $item->delete() : $item->save(false);   
                 }

@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
  
  foreach(Dietday::find()->forDietView()->andWhere(['diet_id'=> $model->id])->all() as $k => $dietday)
  {
+        if(!$k) $items[$k]['contentOptions'] = ['class' => 'in'];
         $items[$k]['options'] = array('class' => 'panel-success');
         $items[$k]['label'] = '<b>'.($k+1).'-й день (Калорийность - '.$dietday->kal.' ккал.; Б \ Ж \ У - '.round($dietday->protein, 2).' \ '.round($dietday->fat,2).' \ '.round($dietday->carbohydrate,2).')</b>';
        
@@ -62,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $dietdayMealDishes[$DietMealDish->meal_id][] = $DietMealDish->dish->title.' - '.$DietMealDish->value.'г.';
         } 
         ob_start();
-        echo '<table class="table table-bordered">';
+        echo '<table class="table table-bordered table-condensed">';
         foreach($meals as $meal)
         {
             if(isset($dietdayMealDishes[$meal->id]))
@@ -80,8 +81,18 @@ $this->params['breadcrumbs'][] = $this->title;
             
             }
         }
-        echo '</table>';
         
+        echo '</table>';
+        ?>
+                
+        <?= Html::a('Update', ['updatedays', 'id' => $model->id, 'DayId' => $dietday->id], ['class' => 'btn btn-primary']);?>
+        <?= Html::a('Delete', ['dietday/delete', 'id' => $dietday->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Вы уверены что хотите удалить этот день?',
+                'method' => 'post',
+            ],
+        ]); 
         
         $items[$k]['content'] = ob_get_clean();
  }

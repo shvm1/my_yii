@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Diet;
+use app\models\Dietday;
 use app\models\search\DietSearch;
 use app\models\DietPrice;
 use app\models\Kit;
@@ -106,6 +107,28 @@ class DietController extends Controller
     }
 
     /**
+     * Updates an existing Diet model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdatedays($id, $DayId)
+    {
+        
+        $model = $this->findModel($id);
+        $dietday = $this->findDay($DayId);
+        
+        
+            return $this->render('updateday', [
+                'model' => $model,
+                'dietday' => $dietday,
+            ]);
+        
+    }
+    
+    
+    
+    /**
      * Deletes an existing Diet model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -130,6 +153,16 @@ class DietController extends Controller
         if (($model = Diet::findOne($id)) !== null && $model->status_del == 0) {
                      
             return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+    protected function findDay($id)
+    {
+        if (($dietday = Dietday::findOne($id)) !== null && $dietday->status_del == 0) {
+                     
+            return $dietday;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

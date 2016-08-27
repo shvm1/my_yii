@@ -9,10 +9,10 @@ namespace app\models\query;
  */
 class DishQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    public function active()
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere(['status_del' => 0]);
+    }
 
     /**
      * @inheritdoc
